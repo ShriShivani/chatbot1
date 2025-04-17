@@ -1,3 +1,4 @@
+/* Basic Body Styling */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
@@ -5,32 +6,41 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    margin: 0;
 }
 
+/* Chat Container */
 .chat-container {
     width: 350px;
     background: white;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 95%;
 }
 
+/* Chat Header */
 .chat-header {
     background: #6200ea;
     color: white;
     padding: 15px;
     text-align: center;
     font-size: 18px;
+    font-weight: bold;
 }
 
+/* Chat Box */
 .chat-box {
-    height: 400px;
+    flex-grow: 1;
     overflow-y: auto;
     padding: 15px;
     display: flex;
     flex-direction: column;
 }
 
+/* Messages Styling */
 .bot-message, .user-message {
     padding: 10px;
     margin: 5px;
@@ -49,6 +59,7 @@ body {
     align-self: flex-end;
 }
 
+/* Chat Input */
 .chat-input {
     display: flex;
     padding: 10px;
@@ -69,6 +80,12 @@ body {
     color: white;
     border: none;
     cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.chat-input button:hover {
+    background-color: #4b00b5;
 }
 
 /* ------------------------------ */
@@ -127,3 +144,84 @@ body {
 .auth-link a:hover {
     text-decoration: underline;
 }
+
+/* ------------------------------ */
+/* Resume Upload Section */
+/* ------------------------------ */
+.resume-upload {
+    padding: 15px;
+    background-color: #f8f6ff;
+    border-top: 1px solid #ddd;
+    border-radius: 0 0 10px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+.resume-upload label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #6200ea;
+    text-align: center;
+}
+
+.resume-upload input[type="file"] {
+    padding: 8px;
+    font-size: 13px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.resume-upload button {
+    padding: 10px;
+    background-color: #6200ea;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.resume-upload button:hover {
+    background-color: #4b00b5;
+}
+
+/* ------------------------------ */
+/* Logout Button Styling */
+/* ------------------------------ */
+.logout-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.logout-container button {
+    padding: 8px 15px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.logout-container button:hover {
+    background-color: #d32f2f;
+}
+
+/* ------------------------------ */
+/* Keyframe Animation for Fade-In Effect */
+/* ------------------------------ */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+

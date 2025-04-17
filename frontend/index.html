@@ -1,60 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asha AI Chatbot</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Asha AI Chatbot</title>
+  <link rel="stylesheet" href="style.css" />
 
-    <!-- ✅ Firebase compat scripts -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
-    <script src="firebase-config.js"></script>
-    <script src="signup.js"></script>
+  <!-- ✅ Firebase compat scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+  <script src="firebase-config.js"></script>
 </head>
 <body>
 
-    <h1>Welcome to Asha AI Chatbot</h1>
-    <p id="user-info">Loading user info...</p>
-    
-    <div class="logout-container">
-        <button onclick="logout()">Logout</button>
+  <h1>Welcome to Asha AI Chatbot</h1>
+  <p id="user-info">Loading user info...</p>
+
+  <!-- ✅ Logout -->
+  <div class="logout-container">
+    <button onclick="logout()">Logout</button>
+  </div>
+
+  <!-- ✅ Chatbot Container -->
+  <div class="chat-container">
+
+    <div class="chat-header">Asha AI Chatbot</div>
+
+    <!-- ✅ Chat Box -->
+    <div class="chat-box" id="chat-box">
+      <p class="bot-message">👋 Hello! How can I assist you in finding jobs today?</p>
     </div>
 
-    <div class="chat-container">
-        <div class="chat-header">Asha AI Chatbot</div>
-        <div class="chat-box" id="chat-box">
-            <p class="bot-message">Hello! How can I assist you in finding jobs today?</p>
-        </div>
-        <div class="chat-input">
-            <input type="text" id="user-input" placeholder="Type a message...">
-            <button onclick="sendMessage()">Send</button>
-        </div>
+    <!-- ✅ Chat Input -->
+    <div class="chat-input">
+      <input type="text" id="user-input" placeholder="Type a message..." />
+      <button onclick="sendMessage()">Send</button>
     </div>
 
-    <script src="script.js"></script>
+    <!-- ✅ Resume Upload -->
+    <div class="resume-upload">
+      <label for="resume-file">📄 Upload Resume (PDF only):</label>
+      <input type="file" id="resume-file" accept=".pdf" />
+      <button onclick="uploadResume()">Upload Resume</button>
+    </div>
 
-    <script>
-        firebase.auth().onAuthStateChanged((user) => {
-            if (user) {
-                // Display user name or email
-                const name = user.displayName;
-                const email = user.email;
-                document.getElementById("user-info").innerText = 
-                    name ? `👋 Hello, ${name}!` : `👋 Logged in as ${email}`;
-            } else {
-                // Redirect to login if not authenticated
-                window.location.href = "login.html";
-            }
-        });
+  </div>
 
-        function logout() {
-            firebase.auth().signOut().then(() => {
-                alert("Logged out successfully!");
-                window.location.href = "login.html";
-            });
-        }
-    </script>
+  <!-- ✅ Script -->
+  <script src="script.js"></script>
+
+  <!-- ✅ Auth & Logout Handling -->
+  <script>
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        const name = user.displayName;
+        const email = user.email;
+        document.getElementById("user-info").innerText =
+          name ? `👋 Hello, ${name}!` : `👋 Logged in as ${email}`;
+      } else {
+        window.location.href = "login.html";
+      }
+    });
+
+    function logout() {
+      firebase.auth().signOut().then(() => {
+        alert("✅ Logged out successfully!");
+        window.location.href = "login.html";
+      });
+    }
+  </script>
 
 </body>
 </html>
