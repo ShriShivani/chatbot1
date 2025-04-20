@@ -1,54 +1,77 @@
-// Function to send user message to FastAPI backend
+// 🔐 Persistent User ID and Conversation ID using localStorage
+let user_id = localStorage.getItem("user_id") || `user_${Math.floor(Math.random() * 1000000)}`;
+localStorage.setItem("user_id", user_id);
+
+let conversation_id = localStorage.getItem("conversation_id") || null;
+
+// Send message to FastAPI backend
 function sendMessage() {
-    let inputField = document.getElementById("user-input");
-    let userText = inputField.value.trim();
-    if (userText === "") return;
+    const inputField = document.getElementById("user-input");
+    const chatBox = document.getElementById("chat-box");
+    const userText = inputField.value.trim();
 
-    let chatBox = document.getElementById("chat-box");
+    if (!userText) return;
 
-    // Add user message
-    let userMessage = document.createElement("p");
+    // Show user message
+    const userMessage = document.createElement("p");
     userMessage.className = "user-message";
     userMessage.innerText = userText;
     chatBox.appendChild(userMessage);
     chatBox.scrollTop = chatBox.scrollHeight;
 
-    // Send to backend
+    // Prepare payload
+    const payload = {
+        message: userText,
+        user_id: user_id,
+        conversation_id: conversation_id
+    };
+
     fetch("http://127.0.0.1:8000/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userText })
+        body: JSON.stringify(payload)
     })
     .then(response => response.json())
     .then(data => {
         if (data.reply) {
-            let botMessage = document.createElement("p");
+            const botMessage = document.createElement("p");
             botMessage.className = "bot-message";
             botMessage.innerText = data.reply;
             chatBox.appendChild(botMessage);
             chatBox.scrollTop = chatBox.scrollHeight;
+
+            // Update stored conversation ID
+            if (data.conversation_id) {
+                conversation_id = data.conversation_id;
+                localStorage.setItem("conversation_id", conversation_id);
+            }
         }
     })
-    .catch(error => console.error("Error sending message:", error));
+    .catch(error => {
+        console.error("Error sending message:", error);
+        const errorMsg = document.createElement("p");
+        errorMsg.className = "bot-message";
+        errorMsg.innerText = "❌ Something went wrong. Please try again.";
+        chatBox.appendChild(errorMsg);
+    });
 
     inputField.value = "";
 }
 
-// Initial greeting from backend
+// Initial backend greeting
 async function getMessage() {
     try {
         let response = await fetch("http://127.0.0.1:8000/");
         let data = await response.json();
         document.getElementById("output").innerText = data.message;
     } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching backend greeting:", error);
     }
 }
 
+// Enable "Enter" key to send messages
 window.onload = function () {
     getMessage();
-
-    // Allow sending message with Enter key
     document.getElementById("user-input").addEventListener("keypress", function (event) {
         if (event.key === "Enter") {
             sendMessage();
@@ -83,7 +106,6 @@ function uploadResume() {
     })
     .then(response => response.json())
     .then(data => {
-        // Show extracted summary and skills
         if (data.summary || data.skills_detected) {
             const resumeInfo = document.createElement("p");
             resumeInfo.className = "bot-message";
@@ -138,3 +160,4 @@ function uploadResume() {
 
     fileInput.value = "";
 }
+
