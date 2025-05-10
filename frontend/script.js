@@ -4,6 +4,11 @@ localStorage.setItem("user_id", user_id);
 
 let conversation_id = localStorage.getItem("conversation_id") || null;
 
+// API base URL - automatically detects environment
+const API_BASE_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" 
+    ? "http://127.0.0.1:8000" 
+    : "/api";
+
 // Send message to FastAPI backend
 function sendMessage() {
     const inputField = document.getElementById("user-input");
@@ -26,7 +31,7 @@ function sendMessage() {
         conversation_id: conversation_id
     };
 
-    fetch("http://127.0.0.1:8000/chat", {
+    fetch(`${API_BASE_URL}/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
@@ -61,7 +66,7 @@ function sendMessage() {
 // Initial backend greeting
 async function getMessage() {
     try {
-        let response = await fetch("http://127.0.0.1:8000/");
+        let response = await fetch(`${API_BASE_URL}/`);
         let data = await response.json();
         document.getElementById("output").innerText = data.message;
     } catch (error) {
@@ -100,7 +105,7 @@ function uploadResume() {
     chatBox.appendChild(statusMsg);
     chatBox.scrollTop = chatBox.scrollHeight;
 
-    fetch("http://127.0.0.1:8000/upload-resume/", {
+    fetch(`${API_BASE_URL}/upload-resume/`, {
         method: "POST",
         body: formData
     })
@@ -117,7 +122,7 @@ function uploadResume() {
         }
 
         if (data.resume_id) {
-            fetch(`http://127.0.0.1:8000/match-jobs/${data.resume_id}`)
+            fetch(`${API_BASE_URL}/match-jobs/${data.resume_id}`)
                 .then(res => res.json())
                 .then(jobData => {
                     const jobReply = document.createElement("p");
@@ -160,4 +165,3 @@ function uploadResume() {
 
     fileInput.value = "";
 }
-

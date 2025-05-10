@@ -1,6 +1,15 @@
 fastapi
 uvicorn
+python-multipart
+pydantic
 pymongo
-python-dotenv
+dnspython
+passlib[bcrypt]
+python-jose[cryptography]
 requests
-PyMuPDF
+python-dotenv
+transformers
+pytesseract
+pdf2image
+pillow
+firebase-admin
